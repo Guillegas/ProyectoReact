@@ -42,40 +42,7 @@ CREATE DATABASE IF NOT EXISTS literatura;
 CREATE USER IF NOT EXISTS 'proyecto_guille'@'localhost' IDENTIFIED BY 'proyecto_guille';
 GRANT ALL PRIVILEGES ON literatura.* TO 'proyecto_guille'@'localhost';
 FLUSH PRIVILEGES;
-
--- Usar la base de datos
-USE literatura;
-
--- Crear tabla autores
-CREATE TABLE `autores` (
-  `id_autor` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
-  `nacionalidad` varchar(100) DEFAULT NULL,
-  `fecha_nacimiento` date DEFAULT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id_autor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Crear tabla libros
-CREATE TABLE `libros` (
-  `id_libro` int NOT NULL AUTO_INCREMENT,
-  `titulo` varchar(200) NOT NULL,
-  `isbn` varchar(13) DEFAULT NULL,
-  `editorial` varchar(100) DEFAULT NULL,
-  `anyo_publicacion` int DEFAULT NULL,
-  `paginas` int DEFAULT NULL,
-  `precio` decimal(6,2) DEFAULT NULL,
-  `id_autor` int DEFAULT NULL,
-  `imagen` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_libro`),
-  UNIQUE KEY `isbn` (`isbn`),
-  KEY `idx_autor` (`id_autor`),
-  CONSTRAINT `libros_ibfk_1` FOREIGN KEY (`id_autor`) REFERENCES `autores` (`id_autor`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
-
-> **Nota**: También puedes importar el archivo SQL incluido: `mysql -u proyecto_guille -pproyecto_guille literatura < ProyectoNodeJs_Guille/src/sql/literatura.sql`
-
 ## ▶️ Ejecutar el Proyecto
 
 **Terminal 1 - Backend**:
