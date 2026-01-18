@@ -1,0 +1,28 @@
+### Obtener todos los autores
+GET http://localhost:3000/api/authors
+
+### Obtener autor por ID
+GET http://localhost:3000/api/authors/1
+
+### Crear un nuevo autor
+POST http://localhost:3000/api/authors
+Content-Type: application/json
+
+{
+    "nombre": "Autor de Prueba",
+    "nacionalidad": "Tierra Media",
+    "fecha_nacimiento": "1900-01-01",
+    "activo": true
+}
+
+### Actualizar un autor existente
+PUT http://localhost:3000/api/authors/1
+Content-Type: application/json
+
+{
+    "nombre": "Gabriel García Márquez (Actualizado)",
+    "nacionalidad": "Colombiana"
+}
+
+### Borrar un autor
+DELETE http://localhost:3000/api/authors/11

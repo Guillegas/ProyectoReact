@@ -1,0 +1,17 @@
+### Test Authors Filter - Filter by Birth Year (>=1950)
+GET http://localhost:3000/api/authors/filter/by-birth-year?minYear=1950
+
+### Test Authors Filter - Filter by Birth Year (>=1900)
+GET http://localhost:3000/api/authors/filter/by-birth-year?minYear=1900
+
+### Test Authors Filter - Filter by Birth Year (>=2000)
+GET http://localhost:3000/api/authors/filter/by-birth-year?minYear=2000
+
+### Test Books Filter - Filter by Pages (>=500)
+GET http://localhost:3000/api/books/filter/by-pages?minPages=500
+
+### Test Books Filter - Filter by Pages (>=100)
+GET http://localhost:3000/api/books/filter/by-pages?minPages=100
+
+### Test Books Filter - Filter by Pages (>=1000)
+GET http://localhost:3000/api/books/filter/by-pages?minPages=1000
