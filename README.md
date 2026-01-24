@@ -100,7 +100,7 @@ PORT=3000
 
 ## 👨‍💻 Autor
 
-Guillermo García
+Guillermo Andújar
 
 ---
 
