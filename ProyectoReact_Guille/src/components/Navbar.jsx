@@ -127,6 +127,10 @@ const Navbar = () => {
           </MenuItem>
         </Menu>
 
+        <Button color="inherit" component={RouterLink} to="/informes">
+          Informes
+        </Button>
+
         <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
           {theme.palette.mode === "dark" ? (
             <Brightness7Icon />

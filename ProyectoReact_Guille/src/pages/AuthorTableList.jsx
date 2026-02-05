@@ -16,8 +16,93 @@ import Box from "@mui/material/Box";
 import { getAuthors, deleteAuthor } from "../services/api";
 import AuthorForm from "../components/AuthorForm";
 import ConfirmDialog from "../components/ConfirmDialog";
+import { useRef } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import {
+  PDFDownloadLink,
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+} from "@react-pdf/renderer";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import PrintIcon from "@mui/icons-material/Print";
+
+const styles = StyleSheet.create({
+  page: { flexDirection: "column", backgroundColor: "#fff", padding: 20 },
+  header: { fontSize: 20, textAlign: "center", marginBottom: 20 },
+  table: {
+    display: "table",
+    width: "auto",
+    borderStyle: "solid",
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
+  },
+  tableRow: { margin: "auto", flexDirection: "row" },
+  tableCol: {
+    width: "25%",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    borderTopWidth: 0,
+  },
+  tableCell: { margin: "auto", marginTop: 5, fontSize: 10 },
+  tableHeader: {
+    margin: "auto",
+    marginTop: 5,
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+});
+
+const AuthorDocument = ({ data }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.header}>Listado de Autores</Text>
+      <View style={styles.table}>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCol}>
+            <Text style={styles.tableHeader}>Nombre</Text>
+          </View>
+          <View style={styles.tableCol}>
+            <Text style={styles.tableHeader}>Nacionalidad</Text>
+          </View>
+          <View style={styles.tableCol}>
+            <Text style={styles.tableHeader}>Fecha Nac.</Text>
+          </View>
+          <View style={styles.tableCol}>
+            <Text style={styles.tableHeader}>Activo</Text>
+          </View>
+        </View>
+        {data.map((row) => (
+          <View style={styles.tableRow} key={row.id_autor}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{row.nombre}</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{row.nacionalidad}</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{row.fecha_nacimiento}</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{row.activo ? "Sí" : "No"}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </Page>
+  </Document>
+);
 
 // Página de listado básico de autores en formato tabla
+/**
+ * Componente de página que muestra un listado de autores en una tabla.
+ * Permite crear, editar, eliminar y exportar a PDF (imagen y reporte).
+ * @component
+ */
 function AuthorTableList() {
   // Estados: lista de autores, error, formulario y confirmación de borrado
   const [datos, setDatos] = useState([]);
@@ -25,6 +110,7 @@ function AuthorTableList() {
   const [openForm, setOpenForm] = useState(false);
   const [currentAuthor, setCurrentAuthor] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const tableRef = useRef(null);
 
   // Cargar lista de autores desde la API
   useEffect(() => {
@@ -125,18 +211,66 @@ function AuthorTableList() {
   // Tabla de autores con cabecera y botón de nuevo
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", my: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          my: 3,
+          alignItems: "center",
+        }}
+      >
         <Typography variant="h4">Listado de autores</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleCreate}
-        >
-          Nuevo Autor
-        </Button>
+        <Box>
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="small"
+            startIcon={<PrintIcon />}
+            onClick={async () => {
+              const element = tableRef.current;
+              if (!element) return;
+              const canvas = await html2canvas(element);
+              const imgData = canvas.toDataURL("image/png");
+              const pdf = new jsPDF("p", "mm", "a4");
+              const pdfWidth = pdf.internal.pageSize.getWidth();
+              const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+              pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+              pdf.save("autores-imagen.pdf");
+            }}
+            sx={{ mr: 1 }}
+          >
+            PDF Imagen
+          </Button>
+
+          <PDFDownloadLink
+            document={<AuthorDocument data={datos} />}
+            fileName="listado-autores.pdf"
+            style={{ textDecoration: "none", marginRight: "8px" }}
+          >
+            {({ loading }) => (
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                startIcon={<PictureAsPdfIcon />}
+                disabled={loading}
+              >
+                {loading ? "..." : "PDF Reporte"}
+              </Button>
+            )}
+          </PDFDownloadLink>
+
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={handleCreate}
+          >
+            Nuevo Autor
+          </Button>
+        </Box>
       </Box>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} ref={tableRef}>
         <Table stickyHeader aria-label="simple table">
           <TableHead>
             <TableRow>

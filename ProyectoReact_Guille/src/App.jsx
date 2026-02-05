@@ -8,6 +8,7 @@ import AuthorList from "./pages/AuthorList";
 import AuthorTableList from "./pages/AuthorTableList";
 import AuthorsByYear from "./pages/AuthorsByYear";
 import BooksByPages from "./pages/BooksByPages";
+import Reports from "./pages/Reports";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/autores-tabla" element={<AuthorTableList />} />
           <Route path="/autores-filtro" element={<AuthorsByYear />} />
           <Route path="/libros-filtro" element={<BooksByPages />} />
+          <Route path="/informes" element={<Reports />} />
         </Routes>
       </Layout>
     </Router>

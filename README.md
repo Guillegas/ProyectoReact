@@ -145,3 +145,4 @@ Guillermo Andújar
 - [ ] Navegador abierto en `http://localhost:5173`
 
 ¡Listo para usar! 🎉
+a
