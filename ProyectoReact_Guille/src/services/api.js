@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: window.__APP_CONFIG__?.API_URL || 'http://localhost:3000/api',
 });
 
 // Libros

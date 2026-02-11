@@ -1,0 +1,24 @@
+{
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/better-docs/component",
+    "node_modules/better-docs/lang"
+  ],
+  "recurseDepth": 10,
+  "source": {
+    "include": ["src"],
+    "includePattern": ".+\\.(js|jsx|ts|tsx)$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "opts": {
+    "template": "node_modules/better-docs",
+    "destination": "./docs",
+    "recurse": true,
+    "readme": "README.md"
+  },
+  "templates": {
+    "better-docs": {
+        "name": "ProyectoReact_Guille Documentation"
+    }
+  }
+}
